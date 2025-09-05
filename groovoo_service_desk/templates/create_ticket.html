@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+{% block title %}Novo Ticket - Service&nbsp;Desk{% endblock %}
+{% block content %}
+<div style="padding:24px;max-width:600px;margin:0 auto;">
+  <h2>Criar Novo Ticket</h2>
+  <form method="post" enctype="multipart/form-data">
+    <label for="client_name">Nome do Cliente</label>
+    <input type="text" id="client_name" name="client_name" required style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);" />
+
+    <label for="client_contact">Contato do Cliente</label>
+    <input type="text" id="client_contact" name="client_contact" required style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);" />
+
+    <label for="channel">Canal de Atendimento</label>
+    <input type="text" id="channel" name="channel" required style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);" />
+
+    <label for="category">Categoria do Problema</label>
+    <input type="text" id="category" name="category" required style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);" />
+
+    <label for="description">Descrição detalhada</label>
+    <textarea id="description" name="description" required rows="4" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);"></textarea>
+
+    <label for="attachments">Anexos (imagem ou PDF)</label>
+    <input type="file" id="attachments" name="attachments" multiple style="display:block;margin-bottom:16px;" />
+
+    <button type="submit" class="primary-btn">Criar Ticket</button>
+    <a href="{{ url_for('dashboard') }}" class="primary-btn" style="background-color:#7f8c8d;margin-left:8px;">Cancelar</a>
+  </form>
+</div>
+{% endblock %}

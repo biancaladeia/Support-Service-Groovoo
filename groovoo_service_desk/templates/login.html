@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block title %}Login - Service&nbsp;Desk{% endblock %}
+{% block content %}
+<div class="login-page">
+  <div class="login-container">
+    <h1>Entrar</h1>
+    <form method="post">
+      <input type="text" name="username" placeholder="Usuário" required />
+      <input type="password" name="password" placeholder="Senha" required />
+      <button type="submit">Login</button>
+    </form>
+    <div style="margin-top:12px;font-size:14px;">
+      Não tem conta? <a href="{{ url_for('register') }}">Registrar</a>
+    </div>
+  </div>
+</div>
+{% endblock %}

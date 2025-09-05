@@ -1,0 +1,67 @@
+{% extends 'base.html' %}
+{% block title %}Ticket {{ ticket.id }} - Service&nbsp;Desk{% endblock %}
+{% block content %}
+<div style="padding:24px;max-width:800px;margin:0 auto;">
+  <h2>Detalhes do Ticket {{ ticket.id }}</h2>
+  <div class="card" style="margin-bottom:24px;">
+    <h3>{{ ticket.category }}</h3>
+    <span class="status-badge status-{{ {'Aberto':'open','Aguardando':'waiting_customer','Fechado':'closed'}[ticket.status] }}">{{ ticket.status }}</span>
+    <p><strong>Cliente:</strong> {{ ticket.client_name }}</p>
+    <p><strong>Contato:</strong> {{ ticket.client_contact }}</p>
+    <p><strong>Canal:</strong> {{ ticket.channel }}</p>
+    <p><strong>Categoria:</strong> {{ ticket.category }}</p>
+    <p><strong>Descrição:</strong><br/>{{ ticket.description|e }}</p>
+    <p><strong>Criado em:</strong> {{ ticket.created_at.strftime('%d/%m/%Y %H:%M') }}</p>
+    <p><strong>Status:</strong> {{ ticket.status }}</p>
+  </div>
+
+  <!-- Attachments -->
+  <div style="margin-bottom:24px;">
+    <h3>Anexos</h3>
+    {% if ticket.attachments %}
+    <ul class="attachments-list">
+      {% for att in ticket.attachments %}
+      <li><a href="{{ url_for('static', filename='uploads/' + att.filepath) }}" target="_blank">{{ att.filename }}</a></li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>Não há anexos.</p>
+    {% endif %}
+  </div>
+
+  <!-- Comments -->
+  <div style="margin-bottom:24px;">
+    <h3>Comentários</h3>
+    {% if ticket.comments %}
+    <ul class="messages-list">
+      {% for comment in ticket.comments %}
+      <li>
+        <strong>{{ comment.author.username }}</strong> ({{ comment.timestamp.strftime('%d/%m/%Y %H:%M') }}):<br />
+        {{ comment.content|e }}
+      </li>
+      {% endfor %}
+    </ul>
+    {% else %}
+    <p>Nenhum comentário ainda.</p>
+    {% endif %}
+  </div>
+
+  <!-- Update form -->
+  <div style="margin-bottom:24px;">
+    <h3>Adicionar Comentário / Atualizar Status</h3>
+    <form method="post" enctype="multipart/form-data">
+      <textarea name="comment" rows="3" placeholder="Adicionar um comentário" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);"></textarea>
+      <label for="status">Status:</label>
+      <select name="status" id="status" style="padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);">
+        {% for status in ['Aberto','Aguardando','Fechado'] %}
+        <option value="{{ status }}" {% if ticket.status == status %}selected{% endif %}>{{ status }}</option>
+        {% endfor %}
+      </select>
+      <label for="attachments">Adicionar anexos</label>
+      <input type="file" id="attachments" name="attachments" multiple style="display:block;margin-bottom:8px;" />
+      <button type="submit" class="primary-btn">Salvar</button>
+      <a href="{{ url_for('dashboard') }}" class="primary-btn" style="background-color:#7f8c8d;margin-left:8px;">Voltar</a>
+    </form>
+  </div>
+</div>
+{% endblock %}

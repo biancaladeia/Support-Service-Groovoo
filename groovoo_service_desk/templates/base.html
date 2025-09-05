@@ -1,0 +1,41 @@
+{%- set lang = 'pt-BR' -%}
+<!DOCTYPE html>
+<html lang="{{ lang }}">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{% block title %}Service&nbsp;Desk{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  </head>
+  <body>
+    {% if current_user.is_authenticated %}
+    <nav class="navbar">
+      <div class="brand">Groovoo&nbsp;Service&nbsp;Desk</div>
+      <div class="user-info">
+        <span>{{ current_user.username }}</span>
+        <a class="primary-btn" href="{{ url_for('create_ticket') }}">Novo&nbsp;Ticket</a>
+        <form action="{{ url_for('logout') }}" method="get" style="display:inline; margin-left:8px;">
+          <button type="submit" class="primary-btn" style="background:none;color:var(--primary-color);padding:0;">Sair</button>
+        </form>
+      </div>
+    </nav>
+    {% endif %}
+
+    {# Flash messages #}
+    {% with messages = get_flashed_messages(with_categories=true) %}
+    {% if messages %}
+    <div class="messages" style="padding: 16px;">
+      {% for category, message in messages %}
+      <div style="margin-bottom:8px;color:{% if category == 'error' %}red{% elif category == 'success' %}green{% else %}inherit{% endif %};">
+        {{ message }}
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+    {% endwith %}
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+  </body>
+</html>

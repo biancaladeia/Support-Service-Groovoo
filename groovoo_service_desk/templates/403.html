@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% block title %}Acesso Negado{% endblock %}
+{% block content %}
+<div style="padding:24px;text-align:center;">
+  <h2>403 - Acesso Negado</h2>
+  <p>Você não tem permissão para acessar este recurso.</p>
+  <a href="{{ url_for('dashboard') }}" class="primary-btn" style="background-color:#7f8c8d;margin-top:16px;">Voltar</a>
+</div>
+{% endblock %}
