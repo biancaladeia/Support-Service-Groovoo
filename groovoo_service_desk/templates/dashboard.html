@@ -2,23 +2,25 @@
 {% block title %}Dashboard - Service&nbsp;Desk{% endblock %}
 {% block content %}
 
-<!-- Counters for ticket statuses -->
 <div style="display:flex;gap:16px;padding:16px;">
   <div class="card" style="flex:1;text-align:center;">
     <h3>Abertos</h3>
-    <p style="font-size:24px;">{{ statuses['Aberto'] }}</p>
+    <p style="font-size:24px;">{{ statuses.get('Aberto', 0) }}</p>
   </div>
   <div class="card" style="flex:1;text-align:center;">
     <h3>Aguardando</h3>
-    <p style="font-size:24px;">{{ statuses['Aguardando'] }}</p>
+    <p style="font-size:24px;">{{ statuses.get('Aguardando', 0) }}</p>
+  </div>
+  <div class="card" style="flex:1;text-align:center;">
+    <h3>Resolvidos</h3>
+    <p style="font-size:24px;">{{ statuses.get('Resolvido', 0) }}</p>
   </div>
   <div class="card" style="flex:1;text-align:center;">
     <h3>Fechados</h3>
-    <p style="font-size:24px;">{{ statuses['Fechado'] }}</p>
+    <p style="font-size:24px;">{{ statuses.get('Fechado', 0) }}</p>
   </div>
 </div>
 
-<!-- Filter/search bar -->
 <form class="filters" method="get" action="{{ url_for('dashboard') }}">
   <input type="text" name="q" placeholder="Buscar..." value="{{ query }}" />
   <select name="category">
@@ -32,17 +34,28 @@
   <a href="{{ url_for('export_markdown') }}" class="primary-btn" style="background-color:#e67e22;">Exportar MD</a>
 </form>
 
-<!-- List of tickets as cards -->
 <div class="cards-container">
   {% if tickets %}
-    {% set status_class_map = {'Aberto':'open','Aguardando':'waiting_customer','Fechado':'closed'} %}
     {% for ticket in tickets %}
     <div class="card">
-      <h3>Ticket {{ ticket.id }}</h3>
-      <span class="status-badge status-{{ status_class_map[ticket.status] }}">{{ ticket.status }}</span>
-      <p><strong>Cliente:</strong> {{ ticket.client_name }}</p>
-      <p>{{ ticket.description[:120] }}{% if ticket.description|length > 120 %}…{% endif %}</p>
-      <button class="open-btn" onclick="window.location.href='{{ url_for('ticket_detail', ticket_id=ticket.id) }}'">Detalhes</button>
+      <div>
+        <div style="display: flex; justify-content: space-between; align-items: flex-start;">
+          <h3 style="margin-bottom: 4px; margin-top: 0;">{{ ticket.title }}</h3>
+          <span class="status-badge status-{{ ticket.status | lower }}">{{ ticket.status }}</span>
+        </div>
+        <div style="margin-bottom: 12px;">
+          <span class="priority-badge priority-{{ ticket.priority | lower }}">Prioridade: {{ ticket.priority }}</span>
+        </div>
+        <p><strong>Cliente:</strong> {{ ticket.client_name }}</p>
+        <p style="font-size: 14px; color: #666;">{{ ticket.description[:100] }}{% if ticket.description|length > 100 %}…{% endif %}</p>
+      </div>
+
+      <div style="display: flex; gap: 8px; margin-top: 16px;">
+        <button class="open-btn" onclick="window.location.href='{{ url_for('ticket_detail', ticket_id=ticket.id) }}'">Detalhes</button>
+        <form action="{{ url_for('archive_ticket', ticket_id=ticket.id) }}" method="post" style="margin: 0;">
+          <button type="submit" class="open-btn" style="background-color: #7f8c8d;">Arquivar</button>
+        </form>
+      </div>
     </div>
     {% endfor %}
   {% else %}

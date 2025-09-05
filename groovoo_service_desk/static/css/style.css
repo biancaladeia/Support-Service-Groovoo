@@ -335,3 +335,17 @@ body {
   gap: 8px;
   align-items: center;
 }
+
+/* Estilos para a Prioridade - Adicionar no final do style.css */
+.priority-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius);
+  font-size: 12px;
+  color: white;
+  margin-bottom: 4px;
+}
+
+.priority-low { background-color: #27ae60; } /* Verde */
+.priority-medium { background-color: #f39c12; } /* Amarelo */
+.priority-high { background-color: #e74c3c; } /* Vermelho */
