@@ -1,351 +1,268 @@
-/* Color palette inspired by Groovoo (purple accents and light backgrounds) */
+/* VERSÃO 1.2 - TEMA BRANCO FINAL (BASEADO NAS REFERÊNCIAS) */
 :root {
-  --primary-color: #6c2cb2; /* deep purple used for buttons and highlights */
-  --secondary-color: #f5f0ff; /* light lavender background */
-  --accent-color: #ffb400; /* optional accent (e.g. badges) */
+  --primary-color: #7d40e7; /* Roxo principal dos botões e links */
+  --background-color: #f0f2f5; /* Fundo cinza muito claro */
+  --card-bg: #ffffff; /* Branco para cartões e inputs */
   --text-color: #333;
-  --muted-text: #666;
-  --card-bg: #ffffff;
-  --border-color: #e0e0e0;
-  --modal-bg: rgba(0, 0, 0, 0.5);
+  --muted-text: #6c757d;
+  --border-color: #e9ecef;
   --radius: 8px;
   --transition-speed: 0.2s;
+
+  /* Cores de Prioridade */
+  --priority-low: #28a745;
+  --priority-medium: #ffc107;
+  --priority-high: #dc3545;
+
+  /* Cores de Status */
+  --status-aberto: #0d6efd;
+  --status-aguardando: #ffc107;
+  --status-resolvido: #28a745;
+  --status-fechado: #6c757d;
 }
 
 body {
   margin: 0;
-  padding: 0;
-  background-color: var(--secondary-color);
+  background-color: var(--background-color);
   color: var(--text-color);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
 }
 
-/* Login page */
-.login-page {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 100vh;
-  background-color: var(--secondary-color);
+/* --- ESTRUTURA GERAL --- */
+.main-content {
+  padding: 24px;
 }
-
-.login-container {
-  background-color: var(--card-bg);
-  padding: 40px;
-  border-radius: var(--radius);
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
-  width: 320px;
-  text-align: center;
-}
-
-.login-container h1 {
-  margin-bottom: 24px;
-  color: var(--primary-color);
-}
-
-.login-container input[type="email"],
-.login-container input[type="text"],
-.login-container input[type="password"] {
-  width: 100%;
-  padding: 12px 14px;
-  margin-bottom: 16px;
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  font-size: 14px;
-}
-
-.login-container button {
-  width: 100%;
-  padding: 12px;
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  border-radius: var(--radius);
-  font-size: 16px;
-  cursor: pointer;
-  transition: background-color var(--transition-speed);
-}
-
-.login-container button:hover {
-  background-color: #54218a;
-}
-
-.error-message {
-  margin-top: 12px;
-  color: red;
-  font-size: 14px;
-}
-
-/* Navigation bar */
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 12px 24px;
   background-color: var(--card-bg);
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  border-bottom: 1px solid var(--border-color);
 }
-
 .navbar .brand {
   font-size: 20px;
-  font-weight: bold;
-  color: var(--primary-color);
+  font-weight: 600;
 }
-
-.navbar .primary-btn {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 8px 16px;
-  border-radius: var(--radius);
-  cursor: pointer;
-  transition: background-color var(--transition-speed);
-  margin-right: 16px;
-  text-decoration: none;
-  display: inline-block;
-  font-size: 14px;
-}
-
-.navbar .primary-btn:hover {
-  background-color: #54218a;
-}
-
 .navbar .user-info {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 16px;
 }
 
-.navbar .user-info span {
-  font-size: 14px;
-  color: var(--muted-text);
-}
-
-.navbar .user-info button {
-  background: none;
-  border: none;
-  color: var(--primary-color);
+/* --- BOTÕES PADRONIZADOS --- */
+.btn {
+  display: inline-block;
+  font-weight: 500;
+  text-align: center;
   cursor: pointer;
-  font-size: 14px;
-}
-
-/* Filters */
-.filters {
-  display: flex;
-  gap: 12px;
-  padding: 16px 24px;
-  background-color: var(--card-bg);
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  flex-wrap: wrap;
-}
-
-.filters input,
-.filters select,
-.filters button,
-.filters a {
-  padding: 8px 10px;
-  border: 1px solid var(--border-color);
+  border: 1px solid transparent;
+  padding: 0.6rem 1.2rem;
+  font-size: 1rem;
   border-radius: var(--radius);
-  font-size: 14px;
+  transition: all var(--transition-speed);
   text-decoration: none;
 }
-
-.filters button,
-.filters a.primary-btn {
+.btn-primary {
+  color: #fff;
   background-color: var(--primary-color);
-  color: white;
-  border: none;
-  cursor: pointer;
-  transition: background-color var(--transition-speed);
 }
-
-.filters button:hover,
-.filters a.primary-btn:hover {
-  background-color: #54218a;
+.btn-primary:hover {
+  opacity: 0.9;
 }
-
-/* Cards container */
-.cards-container {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-  gap: 16px;
-  padding: 24px;
+.btn-secondary {
+  color: #fff;
+  background-color: var(--muted-text);
+  border-color: var(--muted-text);
 }
-
-/* Ticket card */
-.card {
-  background-color: var(--card-bg);
-  border: 1px solid var(--border-color);
-  border-radius: var(--radius);
-  padding: 16px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+.btn-secondary:hover {
+  opacity: 0.9;
 }
-
-.card h3 {
-  margin: 0;
-  font-size: 18px;
-  margin-bottom: 8px;
+.btn-link {
   color: var(--primary-color);
-}
-
-.card .status-badge {
-  display: inline-block;
-  padding: 2px 8px;
-  border-radius: var(--radius);
-  font-size: 12px;
-  color: white;
-  margin-bottom: 4px;
-}
-
-.status-open {
-  background-color: #6c2cb2;
-}
-.status-in_progress {
-  background-color: #e67e22;
-}
-.status-waiting_customer {
-  background-color: #f39c12;
-}
-.status-resolved {
-  background-color: #27ae60;
-}
-.status-closed {
-  background-color: #7f8c8d;
-}
-
-.card .assignee {
-  font-size: 12px;
-  color: var(--muted-text);
-  margin-top: 4px;
-}
-
-.card .open-btn {
-  margin-top: 12px;
-  align-self: flex-start;
-  background-color: var(--primary-color);
-  color: white;
+  background-color: transparent;
   border: none;
-  padding: 6px 12px;
-  border-radius: var(--radius);
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color var(--transition-speed);
+  padding: 0;
+  font-size: 1rem;
+  font-weight: 500;
 }
 
-.card .open-btn:hover {
-  background-color: #54218a;
-}
-
-/* Modal styles */
-.modal {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--modal-bg);
+/* --- PÁGINA DE LOGIN E REGISTO --- */
+.login-page {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 1000;
+  height: 100vh;
 }
-
-.modal-content {
+.login-container {
   background-color: var(--card-bg);
-  padding: 24px;
+  padding: 32px;
   border-radius: var(--radius);
-  width: 90%;
-  max-width: 600px;
-  max-height: 90vh;
-  overflow-y: auto;
-  position: relative;
-}
-
-.modal-content h2,
-.modal-content h3 {
-  margin-top: 0;
-  color: var(--primary-color);
-}
-
-.modal .close-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  background: none;
-  border: none;
-  font-size: 24px;
-  color: var(--muted-text);
-  cursor: pointer;
-}
-
-.modal textarea,
-.modal input[type="text"],
-.modal input[type="email"],
-.modal input[type="password"],
-.modal select {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
   width: 100%;
-  padding: 8px;
-  margin: 6px 0;
+  max-width: 360px;
+  text-align: center;
   border: 1px solid var(--border-color);
-  border-radius: var(--radius);
+}
+.login-container h1 {
+  margin-bottom: 24px;
+}
+.form-group {
+  margin-bottom: 16px;
+  text-align: left;
+}
+.form-group label {
+  display: block;
   font-size: 14px;
+  margin-bottom: 8px;
 }
-
-.modal button {
-  background-color: var(--primary-color);
-  color: white;
-  border: none;
-  padding: 8px 16px;
+.form-group input, .form-group textarea, .form-group select {
+  width: 100%;
+  box-sizing: border-box;
+  padding: 12px;
+  border: 1px solid #dcdce6;
   border-radius: var(--radius);
-  font-size: 14px;
-  cursor: pointer;
-  transition: background-color var(--transition-speed);
-  margin-top: 8px;
+  font-size: 1rem;
+}
+.form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+  outline: none;
+  border-color: var(--primary-color);
+  box-shadow: 0 0 0 2px rgba(125, 64, 231, 0.2);
 }
 
-.modal button:hover {
-  background-color: #54218a;
+/* --- DASHBOARD --- */
+.dashboard-header {
+  margin-bottom: 1.5rem;
 }
-
-.messages-list,
-.attachments-list {
-  list-style: none;
-  padding: 0;
+.dashboard-title {
+  font-size: 2rem;
+  font-weight: 700;
   margin: 0;
 }
-
-.messages-list li {
-  border-bottom: 1px solid var(--border-color);
-  padding: 6px 0;
-  font-size: 14px;
-}
-
-.attachments-list li {
-  padding: 4px 0;
-  font-size: 14px;
-}
-
-.status-section,
-.assign-section {
-  margin-top: 12px;
+.filters {
   display: flex;
-  gap: 8px;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--card-bg);
+  border-radius: var(--radius);
+  margin-bottom: 1.5rem;
+}
+.filter-form {
+  display: flex;
+  gap: 1rem;
   align-items: center;
 }
-
-/* Estilos para a Prioridade - Adicionar no final do style.css */
-.priority-badge {
-  display: inline-block;
-  padding: 2px 8px;
+.filter-input, .filter-select {
+  padding: 0.6rem;
+  border: 1px solid var(--border-color);
   border-radius: var(--radius);
-  font-size: 12px;
-  color: white;
-  margin-bottom: 4px;
+  font-size: 1rem;
+}
+.status-counters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+.counter-card {
+  background-color: var(--card-bg);
+  padding: 1rem;
+  border-radius: var(--radius);
+  text-align: center;
+}
+.counter-card h4 {
+  margin: 0 0 0.5rem 0;
+  color: var(--muted-text);
+  font-weight: 500;
+}
+.counter-card p {
+  margin: 0;
+  font-size: 2rem;
+  font-weight: 600;
 }
 
-.priority-low { background-color: #27ae60; } /* Verde */
-.priority-medium { background-color: #f39c12; } /* Amarelo */
-.priority-high { background-color: #e74c3c; } /* Vermelho */
+/* --- CARTÃO DE TICKET --- */
+.ticket-card {
+  background-color: var(--card-bg);
+  border-radius: var(--radius);
+  margin-bottom: 1rem;
+  padding: 1.5rem;
+  border: 1px solid var(--border-color);
+}
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+}
+.card-title {
+  margin: 0;
+  font-size: 1.25rem;
+  font-weight: 600;
+}
+.badges {
+  display: flex;
+  gap: 0.5rem;
+}
+.status-badge, .priority-badge {
+  display: inline-block;
+  padding: 0.25em 0.6em;
+  font-size: 0.75rem;
+  font-weight: 700;
+  border-radius: 999px; /* Pílulas */
+  color: #fff;
+}
+.status-aberto { background-color: var(--status-aberto); }
+.status-aguardando { background-color: var(--status-aguardando); }
+.status-resolvido { background-color: var(--status-resolvido); }
+.status-fechado { background-color: var(--status-fechado); }
+.priority-low { background-color: var(--priority-low); }
+.priority-medium { background-color: var(--priority-medium); }
+.priority-high { background-color: var(--priority-high); }
+
+.card-body .description {
+  color: var(--muted-text);
+}
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 1rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--border-color);
+}
+.card-footer .timestamp {
+  font-size: 0.875rem;
+  color: var(--muted-text);
+}
+.card-actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* --- PÁGINA DE DETALHES DO TICKET --- */
+.ticket-detail-card {
+  background-color: var(--card-bg);
+  padding: 2rem;
+  border-radius: var(--radius);
+}
+
+/* --- MENSAGENS FLASH --- */
+.messages {
+    padding: 0 24px;
+}
+.message {
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-radius: var(--radius);
+    color: #fff;
+}
+.message.success {
+  background-color: var(--priority-low);
+}
+.message.error {
+  background-color: var(--priority-high);
+}

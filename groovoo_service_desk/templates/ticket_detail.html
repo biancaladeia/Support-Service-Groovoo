@@ -1,63 +1,79 @@
 {% extends 'base.html' %}
-{% block title %}Ticket {{ ticket.id }} - Service&nbsp;Desk{% endblock %}
+{% block title %}Ticket {{ ticket.id }} - Service Desk{% endblock %}
 {% block content %}
-<div style="padding:24px;max-width:800px;margin:0 auto;">
-  <h2>Detalhes do Ticket {{ ticket.id }}: {{ ticket.title }}</h2>
-  <div class="card" style="margin-bottom:24px;">
-    <p><strong>Status:</strong> {{ ticket.status }}</p>
-    <p><strong>Prioridade:</strong> {{ ticket.priority }}</p>
+<div class="ticket-detail-card" style="max-width: 800px; margin: 0 auto;">
+  
+  <div class="card-header">
+    <h2 class="card-title">{{ ticket.title }}</h2>
+    <div class="badges">
+        <span class="priority-badge priority-{{ ticket.priority | lower }}">{{ ticket.priority }}</span>
+        <span class="status-badge status-{{ ticket.status | lower }}">{{ ticket.status }}</span>
+    </div>
+  </div>
+
+  <div class="card-body">
     <p><strong>Cliente:</strong> {{ ticket.client_name }} ({{ ticket.client_contact }})</p>
     <p><strong>Email:</strong> {{ ticket.email or 'N/A' }} | <strong>Telefone:</strong> {{ ticket.telefone or 'N/A' }}</p>
     <p><strong>Categoria:</strong> {{ ticket.category }} | <strong>Canal:</strong> {{ ticket.channel }}</p>
     <p><strong>Organizer:</strong> {{ ticket.organizer or 'N/A' }} | <strong>Evento:</strong> {{ ticket.event or 'N/A' }}</p>
     <p><strong>Tags:</strong> {{ ticket.tags or 'Nenhuma' }}</p>
-    <p><strong>Descrição:</strong><br/>{{ ticket.description|e }}</p>
-    <p><strong>Criado em:</strong> {{ ticket.created_at.strftime('%d/%m/%Y %H:%M') }}</p>
+    <hr style="border: none; border-top: 1px solid var(--border-color); margin: 1.5rem 0;">
+    <p><strong>Descrição:</strong><br>{{ ticket.description | replace('\n', '<br>') | safe }}</p>
+    <p><small>Criado em: {{ ticket.created_at.strftime('%d/%m/%Y %H:%M') }}</small></p>
   </div>
 
-  <div style="margin-bottom:24px;">
+  <div style="margin-top: 2rem;">
     <h3>Anexos</h3>
     {% if ticket.attachments %}
-    <ul class="attachments-list">
+      <ul>
       {% for att in ticket.attachments %}
-      <li><a href="{{ url_for('static', filename='uploads/' + att.filepath) }}" target="_blank">{{ att.filename }}</a></li>
+        <li><a href="{{ url_for('static', filename='uploads/' + att.filepath) }}" target="_blank">{{ att.filename }}</a></li>
       {% endfor %}
-    </ul>
+      </ul>
     {% else %}
-    <p>Não há anexos.</p>
+      <p>Não há anexos.</p>
     {% endif %}
   </div>
 
-  <div style="margin-bottom:24px;">
+  <div style="margin-top: 2rem;">
     <h3>Comentários</h3>
     {% if ticket.comments %}
-    <ul class="messages-list">
+      <ul style="list-style: none; padding: 0;">
       {% for comment in ticket.comments %}
-      <li>
-        <strong>{{ comment.author.username }}</strong> ({{ comment.timestamp.strftime('%d/%m/%Y %H:%M') }}):<br />
-        {{ comment.content|e }}
-      </li>
+        <li style="border-top: 1px solid var(--border-color); padding: 1rem 0;">
+          <strong>{{ comment.author.username }}</strong> <small>({{ comment.timestamp.strftime('%d/%m/%Y %H:%M') }})</small>:<br>
+          <p style="margin-top: 0.5rem;">{{ comment.content | replace('\n', '<br>') | safe }}</p>
+        </li>
       {% endfor %}
-    </ul>
+      </ul>
     {% else %}
-    <p>Nenhum comentário ainda.</p>
+      <p>Nenhum comentário ainda.</p>
     {% endif %}
   </div>
 
-  <div style="margin-bottom:24px;">
-    <h3>Adicionar Comentário / Atualizar Status</h3>
+  <div style="margin-top: 2rem; border-top: 1px solid var(--border-color); padding-top: 2rem;">
+    <h3>Adicionar Comentário / Atualizar Ticket</h3>
     <form method="post" enctype="multipart/form-data">
-      <textarea name="comment" rows="3" placeholder="Adicionar um comentário" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);"></textarea>
-      <label for="status">Alterar Status:</label>
-      <select name="status" id="status" style="padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);">
-        {% for s in ['Aberto', 'Aguardando', 'Resolvido', 'Fechado'] %}
-        <option value="{{ s }}" {% if ticket.status == s %}selected{% endif %}>{{ s }}</option>
-        {% endfor %}
-      </select>
-      <label for="attachments">Adicionar anexos</label>
-      <input type="file" id="attachments" name="attachments" multiple style="display:block;margin-bottom:8px;" />
-      <button type="submit" class="primary-btn">Salvar</button>
-      <a href="{{ url_for('dashboard') }}" class="primary-btn" style="background-color:#7f8c8d;margin-left:8px;">Voltar</a>
+      <div class="form-group">
+        <label for="comment">Novo Comentário</label>
+        <textarea name="comment" rows="4"></textarea>
+      </div>
+      <div class="form-group">
+        <label for="status">Alterar Status</label>
+        <select name="status" id="status">
+          {% for s in ['Aberto', 'Aguardando', 'Resolvido', 'Fechado'] %}
+          <option value="{{ s }}" {% if ticket.status == s %}selected{% endif %}>{{ s }}</option>
+          {% endfor %}
+        </select>
+      </div>
+      <div class="form-group">
+          <label for="attachments">Adicionar anexos</label>
+          <input type="file" id="attachments" name="attachments" multiple>
+      </div>
+      <div style="display: flex; justify-content: flex-end; gap: 1rem;">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Voltar</a>
+        <button type="submit" class="btn btn-primary">Salvar Atualizações</button>
+      </div>
     </form>
   </div>
 </div>

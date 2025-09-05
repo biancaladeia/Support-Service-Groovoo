@@ -1,64 +1,93 @@
 {% extends 'base.html' %}
-{% block title %}Novo Ticket - Service&nbsp;Desk{% endblock %}
+{% block title %}Novo Ticket - Service Desk{% endblock %}
 {% block content %}
-<div style="padding:24px;max-width:600px;margin:0 auto;">
-  <h2>Criar Novo Ticket</h2>
+<div class="ticket-detail-card" style="max-width: 700px; margin: 0 auto;">
+  <h2 style="text-align: center; margin-bottom: 2rem;">Criar Novo Ticket</h2>
   <form method="post" enctype="multipart/form-data" novalidate>
     
-    <label for="title">Título *</label>
-    <input type="text" id="title" name="title" required value="{{ form_data.title or '' }}" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);" />
+    <div class="form-group">
+      <label for="title">Título *</label>
+      <input type="text" id="title" name="title" required value="{{ form_data.title or '' }}">
+    </div>
 
-    <label for="description">Descrição Detalhada *</label>
-    <textarea id="description" name="description" required rows="4" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);">{{ form_data.description or '' }}</textarea>
+    <div class="form-group">
+      <label for="description">Descrição Detalhada *</label>
+      <textarea id="description" name="description" required rows="5">{{ form_data.description or '' }}</textarea>
+    </div>
 
-    <label for="priority">Prioridade</label>
-    <select id="priority" name="priority" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);">
-        <option value="Low" {% if form_data.priority == 'Low' %}selected{% endif %}>Baixa</option>
-        <option value="Medium" {% if form_data.priority == 'Medium' %}selected{% endif %}>Média</option>
-        <option value="High" {% if form_data.priority == 'High' %}selected{% endif %}>Alta</option>
-    </select>
+    <div class="form-group">
+      <label for="priority">Prioridade</label>
+      <select id="priority" name="priority">
+          <option value="Low" {% if form_data.priority == 'Low' %}selected{% endif %}>Baixa</option>
+          <option value="Medium" {% if form_data.priority == 'Medium' %}selected{% endif %}>Média</option>
+          <option value="High" {% if form_data.priority == 'High' %}selected{% endif %}>Alta</option>
+      </select>
+    </div>
 
-    <label for="category">Categoria do Problema *</label>
-    <select id="category" name="category" required style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);">
-        <option value="">Selecione uma categoria</option>
-        <option value="Problema com Pagamento" {% if form_data.category == 'Problema com Pagamento' %}selected{% endif %}>Problema com Pagamento</option>
-        <option value="Problema com Ordem" {% if form_data.category == 'Problema com Ordem' %}selected{% endif %}>Problema com Ordem</option>
-        <option value="Erro no App" {% if form_data.category == 'Erro no App' %}selected{% endif %}>Erro no App</option>
-        <option value="Dúvida sobre Evento" {% if form_data.category == 'Dúvida sobre Evento' %}selected{% endif %}>Dúvida sobre Evento</option>
-        <option value="Login/Senha" {% if form_data.category == 'Login/Senha' %}selected{% endif %}>Login/Senha</option>
-        <option value="Autorização de Dispositivo" {% if form_data.category == 'Autorização de Dispositivo' %}selected{% endif %}>Autorização de Dispositivo</option>
-    </select>
+    <div class="form-group">
+      <label for="category">Categoria do Problema *</label>
+      <select id="category" name="category" required>
+          <option value="" disabled selected>Selecione uma categoria</option>
+          <option value="Problema com Pagamento" {% if form_data.category == 'Problema com Pagamento' %}selected{% endif %}>Problema com Pagamento</option>
+          <option value="Problema com Ordem" {% if form_data.category == 'Problema com Ordem' %}selected{% endif %}>Problema com Ordem</option>
+          <option value="Erro no App" {% if form_data.category == 'Erro no App' %}selected{% endif %}>Erro no App</option>
+          <option value="Dúvida sobre Evento" {% if form_data.category == 'Dúvida sobre Evento' %}selected{% endif %}>Dúvida sobre Evento</option>
+          <option value="Login/Senha" {% if form_data.category == 'Login/Senha' %}selected{% endif %}>Login/Senha</option>
+          <option value="Autorização de Dispositivo" {% if form_data.category == 'Autorização de Dispositivo' %}selected{% endif %}>Autorização de Dispositivo</option>
+      </select>
+    </div>
 
-    <label for="channel">Canal de Atendimento *</label>
-    <select id="channel" name="channel" required style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);">
-        <option value="">Selecione um canal</option>
-        <option value="WhatsApp" {% if form_data.channel == 'WhatsApp' %}selected{% endif %}>WhatsApp</option>
-        <option value="Ligação" {% if form_data.channel == 'Ligação' %}selected{% endif %}>Ligação</option>
-        <option value="Email" {% if form_data.channel == 'Email' %}selected{% endif %}>Email</option>
-        <option value="Mensagem" {% if form_data.channel == 'Mensagem' %}selected{% endif %}>Mensagem</option>
-    </select>
+    <div class="form-group">
+      <label for="channel">Canal de Atendimento *</label>
+      <select id="channel" name="channel" required>
+          <option value="" disabled selected>Selecione um canal</option>
+          <option value="WhatsApp" {% if form_data.channel == 'WhatsApp' %}selected{% endif %}>WhatsApp</option>
+          <option value="Ligação" {% if form_data.channel == 'Ligação' %}selected{% endif %}>Ligação</option>
+          <option value="Email" {% if form_data.channel == 'Email' %}selected{% endif %}>Email</option>
+          <option value="Mensagem" {% if form_data.channel == 'Mensagem' %}selected{% endif %}>Mensagem</option>
+      </select>
+    </div>
 
-    <label for="client_name">Nome do Cliente *</label>
-    <input type="text" id="client_name" name="client_name" required value="{{ form_data.client_name or '' }}" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);" />
-    <label for="client_contact">Contato do Cliente *</label>
-    <input type="text" id="client_contact" name="client_contact" required value="{{ form_data.client_contact or '' }}" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);" />
+    <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2rem 0;">
 
-    <label for="email">E-mail</label>
-    <input type="email" id="email" name="email" value="{{ form_data.email or '' }}" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);" />
-    <label for="telefone">Telefone</label>
-    <input type="tel" id="telefone" name="telefone" value="{{ form_data.telefone or '' }}" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);" />
-    <label for="tags">Tags (separadas por vírgula)</label>
-    <input type="text" id="tags" name="tags" value="{{ form_data.tags or '' }}" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);" />
-    <label for="organizer">Organizer</label>
-    <input type="text" id="organizer" name="organizer" value="{{ form_data.organizer or '' }}" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);" />
-    <label for="event">Event</label>
-    <input type="text" id="event" name="event" value="{{ form_data.event or '' }}" style="width:100%;padding:8px;margin-bottom:8px;border:1px solid var(--border-color);border-radius:var(--radius);" />
+    <div class="form-group">
+      <label for="client_name">Nome do Cliente *</label>
+      <input type="text" id="client_name" name="client_name" required value="{{ form_data.client_name or '' }}">
+    </div>
+    <div class="form-group">
+      <label for="client_contact">Contacto do Cliente *</label>
+      <input type="text" id="client_contact" name="client_contact" required value="{{ form_data.client_contact or '' }}">
+    </div>
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" value="{{ form_data.email or '' }}">
+    </div>
+    <div class="form-group">
+      <label for="telefone">Telefone</label>
+      <input type="tel" id="telefone" name="telefone" value="{{ form_data.telefone or '' }}">
+    </div>
+    <div class="form-group">
+      <label for="tags">Tags (separadas por vírgula)</label>
+      <input type="text" id="tags" name="tags" value="{{ form_data.tags or '' }}">
+    </div>
+    <div class="form-group">
+      <label for="organizer">Organizer</label>
+      <input type="text" id="organizer" name="organizer" value="{{ form_data.organizer or '' }}">
+    </div>
+    <div class="form-group">
+      <label for="event">Event</label>
+      <input type="text" id="event" name="event" value="{{ form_data.event or '' }}">
+    </div>
 
-    <label for="attachments">Anexos (imagem ou PDF)</label>
-    <input type="file" id="attachments" name="attachments" multiple style="display:block;margin-bottom:16px;" />
+    <div class="form-group">
+        <label for="attachments">Anexos (imagem ou PDF)</label>
+        <input type="file" id="attachments" name="attachments" multiple>
+    </div>
 
-    <button type="submit" class="primary-btn">Criar Ticket</button>
-    <a href="{{ url_for('dashboard') }}" class="primary-btn" style="background-color:#7f8c8d;margin-left:8px;">Cancelar</a>
+    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+        <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Criar Ticket</button>
+    </div>
   </form>
 </div>
 {% endblock %}
