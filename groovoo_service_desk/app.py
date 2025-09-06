@@ -229,7 +229,6 @@ def logout():
     flash('Você saiu da aplicação.', 'success')
     return redirect(url_for('login'))
 
-
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -238,6 +237,7 @@ def dashboard():
     """
     query = request.args.get('q', '').strip()
     category_filter = request.args.get('category', '').strip()
+    tag_filter = request.args.get('tag', '').strip() # NOVO: Obter o filtro de tag
 
     # Base query: Filtra tickets do utilizador que não estão arquivados
     tickets_query = Ticket.query.filter(
@@ -258,30 +258,43 @@ def dashboard():
     # Apply category filter
     if category_filter:
         tickets_query = tickets_query.filter_by(category=category_filter)
+        
+    # NOVO: Apply tag filter
+    if tag_filter:
+        # Procura a tag dentro do campo de texto 'tags'
+        tickets_query = tickets_query.filter(Ticket.tags.ilike(f"%{tag_filter}%"))
 
     # Execute query
     tickets = tickets_query.order_by(Ticket.created_at.desc()).all()
 
     # Gather unique categories for the filter dropdown
     categories = sorted({t.category for t in Ticket.query.with_entities(Ticket.category).filter_by(assignee_id=current_user.id)})
+    
+    # NOVO: Gather all unique tags for the filter dropdown
+    all_tags = set()
+    all_user_tickets = Ticket.query.filter_by(assignee_id=current_user.id).all()
+    for ticket in all_user_tickets:
+        if ticket.tags:
+            # Separa as tags por vírgula e adiciona ao conjunto
+            tags_list = [tag.strip() for tag in ticket.tags.split(',')]
+            all_tags.update(tags_list)
+    sorted_tags = sorted(list(all_tags))
+
 
     # Compute counters by status
-    statuses = {
-        'Aberto': 0,
-        'Aguardando': 0,
-        'Resolvido': 0,
-        'Fechado': 0
-    }
-    for t in Ticket.query.filter_by(assignee_id=current_user.id):
+    statuses = { 'Aberto': 0, 'Aguardando': 0, 'Resolvido': 0, 'Fechado': 0 }
+    for t in Ticket.query.filter(Ticket.assignee_id == current_user.id, Ticket.status != 'Arquivado'):
         if t.status in statuses:
             statuses[t.status] += 1
-
+    
     return render_template(
         'dashboard.html',
         tickets=tickets,
         categories=categories,
+        all_tags=sorted_tags, # NOVO: Passa as tags para o template
         query=query,
         category_filter=category_filter,
+        tag_filter=tag_filter, # NOVO: Passa o filtro atual para o template
         statuses=statuses
     )
 

@@ -9,12 +9,21 @@
 <div class="filters">
     <form method="get" action="{{ url_for('dashboard') }}" class="filter-form">
         <input type="text" name="q" placeholder="Buscar no título, cliente..." value="{{ query or '' }}" class="filter-input">
+        
         <select name="category" class="filter-select">
             <option value="">Todas as categorias</option>
             {% for category in categories %}
             <option value="{{ category }}" {% if category == category_filter %}selected{% endif %}>{{ category }}</option>
             {% endfor %}
         </select>
+
+        <select name="tag" class="filter-select">
+            <option value="">Todas as tags</option>
+            {% for tag in all_tags %}
+            <option value="{{ tag }}" {% if tag == tag_filter %}selected{% endif %}>{{ tag }}</option>
+            {% endfor %}
+        </select>
+        
         <button type="submit" class="btn btn-primary">Filtrar</button>
     </form>
     <div class="action-buttons">
