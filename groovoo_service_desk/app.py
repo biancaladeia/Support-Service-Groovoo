@@ -387,6 +387,67 @@ def archive_ticket(ticket_id: int):
     flash(f'Ticket #{ticket.id} arquivado com sucesso!', 'success')
     return redirect(url_for('dashboard'))
 
+@app.route('/tickets/archived')
+@login_required
+def archived_tickets():
+    """
+    Exibe uma lista de todos os tickets arquivados do utilizador.
+    """
+    tickets_arquivados = Ticket.query.filter_by(
+        assignee_id=current_user.id,
+        status='Arquivado'
+    ).order_by(Ticket.created_at.desc()).all()
+    
+    return render_template('archived_tickets.html', tickets=tickets_arquivados)
+
+
+@app.route('/tickets/<int:ticket_id>/reopen', methods=['POST'])
+@login_required
+def reopen_ticket(ticket_id: int):
+    """
+    Muda o status de um ticket de 'Arquivado' para 'Aberto'.
+    """
+    ticket = Ticket.query.get_or_404(ticket_id)
+    if ticket.assignee_id != current_user.id:
+        abort(403)
+    
+    ticket.status = 'Aberto'
+    db.session.commit()
+    
+    flash(f'Ticket #{ticket.id} reaberto com sucesso!', 'success')
+    return redirect(url_for('archived_tickets'))
+
+@app.route('/tickets/<int:ticket_id>/edit', methods=['GET', 'POST'])
+@login_required
+def edit_ticket(ticket_id: int):
+    """
+    Exibe um formulário para editar um ticket existente e guarda as alterações.
+    """
+    ticket = Ticket.query.get_or_404(ticket_id)
+    if ticket.assignee_id != current_user.id:
+        abort(403) # Apenas o dono do ticket pode editar
+
+    if request.method == 'POST':
+        # Recolher os dados atualizados do formulário
+        ticket.title = request.form.get('title')
+        ticket.description = request.form.get('description')
+        ticket.priority = request.form.get('priority')
+        ticket.tags = request.form.get('tags')
+        ticket.organizer = request.form.get('organizer')
+        ticket.event = request.form.get('event')
+        ticket.email = request.form.get('email')
+        ticket.telefone = request.form.get('telefone')
+        ticket.client_name = request.form.get('client_name')
+        ticket.client_contact = request.form.get('client_contact')
+        ticket.channel = request.form.get('channel')
+        ticket.category = request.form.get('category')
+        
+        db.session.commit()
+        flash('Ticket atualizado com sucesso!', 'success')
+        return redirect(url_for('ticket_detail', ticket_id=ticket.id))
+
+    # Para o método GET, exibe o formulário pré-preenchido
+    return render_template('edit_ticket.html', ticket=ticket)
 
 @app.route('/export/csv')
 @login_required

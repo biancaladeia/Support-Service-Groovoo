@@ -332,3 +332,34 @@ body {
   padding-top: 1rem;
   margin-top: 1rem;
 }
+
+/* --- MELHORIAS DE USABILIDADE v1.2 --- */
+
+/* Torna o link do cartão preencher todo o espaço */
+.ticket-card a.ticket-link {
+  text-decoration: none;
+  color: inherit;
+  display: block;
+}
+
+/* Botão de ícone para arquivar */
+.icon-btn {
+  background: none;
+  border: none;
+  padding: 0.5rem;
+  cursor: pointer;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.icon-btn:hover {
+  background-color: rgba(0,0,0,0.05);
+}
+
+.icon-btn svg {
+  width: 20px;
+  height: 20px;
+  fill: var(--muted-text);
+}

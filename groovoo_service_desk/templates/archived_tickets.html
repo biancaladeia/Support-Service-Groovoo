@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}Tickets Arquivados - Service Desk{% endblock %}
+{% block content %}
+
+<div class="dashboard-header">
+    <h1 class="dashboard-title">Tickets Arquivados</h1>
+    <a href="{{ url_for('dashboard') }}" class="btn btn-secondary">Voltar ao Dashboard</a>
+</div>
+
+<div class="cards-container">
+  {% if tickets %}
+    {% for ticket in tickets %}
+    <div class="ticket-card card-border-fechado"> <a href="{{ url_for('ticket_detail', ticket_id=ticket.id) }}" class="ticket-link">
+        <div class="card-header">
+          <h3 class="card-title">{{ ticket.title }}</h3>
+          <div class="badges">
+              <span class="priority-badge priority-{{ ticket.priority | lower }}">{{ ticket.priority }}</span>
+              <span class="status-badge status-fechado">{{ ticket.status }}</span>
+          </div>
+        </div>
+        <div class="card-body">
+          <p><strong>Cliente:</strong> {{ ticket.client_name }}</p>
+          <p class="description">{{ ticket.description[:120] }}{% if ticket.description|length > 120 %}…{% endif %}</p>
+        </div>
+      </a>
+      <div class="card-footer">
+        <span class="timestamp">Arquivado em: {{ ticket.created_at.strftime('%d/%m/%Y %H:%M') }}</span>
+        <div class="card-actions">
+          <form action="{{ url_for('reopen_ticket', ticket_id=ticket.id) }}" method="post" style="margin: 0;">
+            <button type="submit" class="btn btn-primary">Reabrir</button>
+          </form>
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  {% else %}
+    <div class="no-tickets" style="text-align: center; padding: 2rem;">
+      <p>Nenhum ticket arquivado encontrado.</p>
+    </div>
+  {% endif %}
+</div>
+
+{% endblock %}

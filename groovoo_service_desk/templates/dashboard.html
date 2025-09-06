@@ -19,6 +19,7 @@
     </form>
     <div class="action-buttons">
         <button class="btn btn-primary" onclick="openModal()">Novo Ticket</button>
+        <a href="{{ url_for('archived_tickets') }}" class="btn btn-secondary">Ver Arquivados</a>
         <a href="{{ url_for('export_csv') }}" class="btn btn-secondary">Exportar CSV</a>
         <a href="{{ url_for('export_markdown') }}" class="btn btn-secondary">Exportar MD</a>
     </div>
@@ -45,25 +46,30 @@
 
 <div class="cards-container">
   {% if tickets %}
-    {% for ticket in tickets %}
+     {% for ticket in tickets %}
     <div class="ticket-card card-border-{{ ticket.status | lower }}">
-      <div class="card-header">
-        <h3 class="card-title">{{ ticket.title }}</h3>
-        <div class="badges">
-            <span class="priority-badge priority-{{ ticket.priority | lower }}">{{ ticket.priority }}</span>
-            <span class="status-badge status-{{ ticket.status | lower }}">{{ ticket.status }}</span>
+      
+      <a href="{{ url_for('ticket_detail', ticket_id=ticket.id) }}" class="ticket-link">
+        <div class="card-header">
+          <h3 class="card-title">{{ ticket.title }}</h3>
+          <div class="badges">
+              <span class="priority-badge priority-{{ ticket.priority | lower }}">{{ ticket.priority }}</span>
+              <span class="status-badge status-{{ ticket.status | lower }}">{{ ticket.status }}</span>
+          </div>
         </div>
-      </div>
-      <div class="card-body">
-        <p><strong>Cliente:</strong> {{ ticket.client_name }}</p>
-        <p class="description">{{ ticket.description[:120] }}{% if ticket.description|length > 120 %}…{% endif %}</p>
-      </div>
+        <div class="card-body">
+          <p><strong>Cliente:</strong> {{ ticket.client_name }}</p>
+          <p class="description">{{ ticket.description[:120] }}{% if ticket.description|length > 120 %}…{% endif %}</p>
+        </div>
+      </a>
+
       <div class="card-footer">
         <span class="timestamp">Atualizado em: {{ ticket.created_at.strftime('%d/%m/%Y %H:%M') }}</span>
         <div class="card-actions">
-          <a href="{{ url_for('ticket_detail', ticket_id=ticket.id) }}" class="btn-link">Detalhes</a>
           <form action="{{ url_for('archive_ticket', ticket_id=ticket.id) }}" method="post" style="margin: 0;">
-            <button type="submit" class="btn btn-secondary">Arquivar</button>
+            <button type="submit" class="icon-btn" title="Arquivar Ticket">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M3 3h18v4H3V3m18 6v12H3V9h18M5 11v2h8v-2H5z"/></svg>
+            </button>
           </form>
         </div>
       </div>

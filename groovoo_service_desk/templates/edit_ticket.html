@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+{% block title %}Editar Ticket {{ ticket.id }} - Service Desk{% endblock %}
+{% block content %}
+<div class="ticket-detail-card" style="max-width: 700px; margin: 0 auto;">
+  <h2 style="text-align: center; margin-bottom: 2rem;">Editar Ticket #{{ ticket.id }}</h2>
+  <form method="post" novalidate>
+    
+    <div class="form-group">
+      <label for="title">Título *</label>
+      <input type="text" id="title" name="title" required value="{{ ticket.title }}">
+    </div>
+
+    <div class="form-group">
+      <label for="description">Descrição Detalhada *</label>
+      <textarea id="description" name="description" required rows="5">{{ ticket.description }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label for="priority">Prioridade</label>
+      <select id="priority" name="priority">
+          <option value="Low" {% if ticket.priority == 'Low' %}selected{% endif %}>Baixa</option>
+          <option value="Medium" {% if ticket.priority == 'Medium' %}selected{% endif %}>Média</option>
+          <option value="High" {% if ticket.priority == 'High' %}selected{% endif %}>Alta</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="category">Categoria do Problema *</label>
+      <select id="category" name="category" required>
+          <option value="Problema com Pagamento" {% if ticket.category == 'Problema com Pagamento' %}selected{% endif %}>Problema com Pagamento</option>
+          <option value="Problema com Ordem" {% if ticket.category == 'Problema com Ordem' %}selected{% endif %}>Problema com Ordem</option>
+          <option value="Erro no App" {% if ticket.category == 'Erro no App' %}selected{% endif %}>Erro no App</option>
+          <option value="Dúvida sobre Evento" {% if ticket.category == 'Dúvida sobre Evento' %}selected{% endif %}>Dúvida sobre Evento</option>
+          <option value="Login/Senha" {% if ticket.category == 'Login/Senha' %}selected{% endif %}>Login/Senha</option>
+          <option value="Autorização de Dispositivo" {% if ticket.category == 'Autorização de Dispositivo' %}selected{% endif %}>Autorização de Dispositivo</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label for="channel">Canal de Atendimento *</label>
+      <select id="channel" name="channel" required>
+          <option value="WhatsApp" {% if ticket.channel == 'WhatsApp' %}selected{% endif %}>WhatsApp</option>
+          <option value="Ligação" {% if ticket.channel == 'Ligação' %}selected{% endif %}>Ligação</option>
+          <option value="Email" {% if ticket.channel == 'Email' %}selected{% endif %}>Email</option>
+          <option value="Mensagem" {% if ticket.channel == 'Mensagem' %}selected{% endif %}>Mensagem</option>
+      </select>
+    </div>
+
+    <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2rem 0;">
+
+    <div class="form-group">
+      <label for="client_name">Nome do Cliente *</label>
+      <input type="text" id="client_name" name="client_name" required value="{{ ticket.client_name }}">
+    </div>
+    <div class="form-group">
+      <label for="client_contact">Contacto do Cliente *</label>
+      <input type="text" id="client_contact" name="client_contact" required value="{{ ticket.client_contact }}">
+    </div>
+    <div class="form-group">
+      <label for="email">E-mail</label>
+      <input type="email" id="email" name="email" value="{{ ticket.email or '' }}">
+    </div>
+    <div class="form-group">
+      <label for="telefone">Telefone</label>
+      <input type="tel" id="telefone" name="telefone" value="{{ ticket.telefone or '' }}">
+    </div>
+    <div class="form-group">
+      <label for="tags">Tags (separadas por vírgula)</label>
+      <input type="text" id="tags" name="tags" value="{{ ticket.tags or '' }}">
+    </div>
+    <div class="form-group">
+      <label for="organizer">Organizer</label>
+      <input type="text" id="organizer" name="organizer" value="{{ ticket.organizer or '' }}">
+    </div>
+    <div class="form-group">
+      <label for="event">Event</label>
+      <input type="text" id="event" name="event" value="{{ ticket.event or '' }}">
+    </div>
+
+    <div style="display: flex; gap: 1rem; justify-content: flex-end; margin-top: 2rem;">
+        <a href="{{ url_for('ticket_detail', ticket_id=ticket.id) }}" class="btn btn-secondary">Cancelar</a>
+        <button type="submit" class="btn btn-primary">Salvar Alterações</button>
+    </div>
+  </form>
+</div>
+{% endblock %}
