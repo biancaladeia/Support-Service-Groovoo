@@ -35,5 +35,15 @@
             {% block content %}{% endblock %}
         </main>
     </div>
-</body>
+
+    <script>
+      function openModal() {
+        document.getElementById('newTicketModal').style.display = 'flex';
+      }
+
+      function closeModal() {
+        document.getElementById('newTicketModal').style.display = 'none';
+      }
+    </script>
+  </body>
 </html>

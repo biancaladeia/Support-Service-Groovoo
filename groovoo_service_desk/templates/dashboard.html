@@ -18,7 +18,7 @@
         <button type="submit" class="btn btn-primary">Filtrar</button>
     </form>
     <div class="action-buttons">
-        <a href="{{ url_for('create_ticket') }}" class="btn btn-primary">Novo Ticket</a>
+        <button class="btn btn-primary" onclick="openModal()">Novo Ticket</button>
         <a href="{{ url_for('export_csv') }}" class="btn btn-secondary">Exportar CSV</a>
         <a href="{{ url_for('export_markdown') }}" class="btn btn-secondary">Exportar MD</a>
     </div>
@@ -46,7 +46,7 @@
 <div class="cards-container">
   {% if tickets %}
     {% for ticket in tickets %}
-    <div class="ticket-card">
+    <div class="ticket-card card-border-{{ ticket.status | lower }}">
       <div class="card-header">
         <h3 class="card-title">{{ ticket.title }}</h3>
         <div class="badges">
@@ -70,11 +70,108 @@
     </div>
     {% endfor %}
   {% else %}
-    <div class="no-tickets">
+    <div class="no-tickets" style="text-align: center; padding: 2rem;">
       <p>Nenhum ticket encontrado.</p>
-      <a href="{{ url_for('create_ticket') }}" class="btn btn-primary">Criar o primeiro ticket</a>
+      <button class="btn btn-primary" onclick="openModal()">Criar o primeiro ticket</button>
     </div>
   {% endif %}
+</div>
+
+<div id="newTicketModal" class="modal-overlay" style="display: none;">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Criar Novo Ticket</h2>
+      <button class="close-modal-btn" onclick="closeModal()">&times;</button>
+    </div>
+    <div class="modal-body">
+      <form action="{{ url_for('create_ticket') }}" method="post" enctype="multipart/form-data" novalidate>
+        
+        <div class="form-group">
+          <label for="title">Título *</label>
+          <input type="text" id="title" name="title" required>
+        </div>
+
+        <div class="form-group">
+          <label for="description">Descrição Detalhada *</label>
+          <textarea id="description" name="description" required rows="4"></textarea>
+        </div>
+
+        <div class="form-group">
+          <label for="priority">Prioridade</label>
+          <select id="priority" name="priority">
+              <option value="Low">Baixa</option>
+              <option value="Medium">Média</option>
+              <option value="High">Alta</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="category">Categoria do Problema *</label>
+          <select id="category" name="category" required>
+              <option value="" disabled selected>Selecione uma categoria</option>
+              <option value="Problema com Pagamento">Problema com Pagamento</option>
+              <option value="Problema com Ordem">Problema com Ordem</option>
+              <option value="Erro no App">Erro no App</option>
+              <option value="Dúvida sobre Evento">Dúvida sobre Evento</option>
+              <option value="Login/Senha">Login/Senha</option>
+              <option value="Autorização de Dispositivo">Autorização de Dispositivo</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="channel">Canal de Atendimento *</label>
+          <select id="channel" name="channel" required>
+              <option value="" disabled selected>Selecione um canal</option>
+              <option value="WhatsApp">WhatsApp</option>
+              <option value="Ligação">Ligação</option>
+              <option value="Email">Email</option>
+              <option value="Mensagem">Mensagem</option>
+          </select>
+        </div>
+
+        <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2rem 0;">
+
+        <div class="form-group">
+          <label for="client_name">Nome do Cliente *</label>
+          <input type="text" id="client_name" name="client_name" required>
+        </div>
+        <div class="form-group">
+          <label for="client_contact">Contacto do Cliente *</label>
+          <input type="text" id="client_contact" name="client_contact" required>
+        </div>
+        <div class="form-group">
+          <label for="email">E-mail</label>
+          <input type="email" id="email" name="email">
+        </div>
+        <div class="form-group">
+          <label for="telefone">Telefone</label>
+          <input type="tel" id="telefone" name="telefone">
+        </div>
+        <div class="form-group">
+          <label for="tags">Tags (separadas por vírgula)</label>
+          <input type="text" id="tags" name="tags">
+        </div>
+        <div class="form-group">
+          <label for="organizer">Organizer</label>
+          <input type="text" id="organizer" name="organizer">
+        </div>
+        <div class="form-group">
+          <label for="event">Event</label>
+          <input type="text" id="event" name="event">
+        </div>
+
+        <div class="form-group">
+            <label for="attachments">Anexos (imagem ou PDF)</label>
+            <input type="file" id="attachments" name="attachments" multiple>
+        </div>
+
+        <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" onclick="closeModal()">Cancelar</button>
+            <button type="submit" class="btn btn-primary">Criar Ticket</button>
+        </div>
+      </form>
+    </div>
+  </div>
 </div>
 
 {% endblock %}
