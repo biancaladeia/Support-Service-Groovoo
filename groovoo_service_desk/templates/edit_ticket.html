@@ -53,16 +53,12 @@
       <input type="text" id="client_name" name="client_name" required value="{{ ticket.client_name }}">
     </div>
     <div class="form-group">
-      <label for="client_contact">Contacto do Cliente *</label>
+      <label for="client_contact">Contato do Cliente *</label>
       <input type="text" id="client_contact" name="client_contact" required value="{{ ticket.client_contact }}">
     </div>
     <div class="form-group">
       <label for="email">E-mail</label>
       <input type="email" id="email" name="email" value="{{ ticket.email or '' }}">
-    </div>
-    <div class="form-group">
-      <label for="telefone">Telefone</label>
-      <input type="tel" id="telefone" name="telefone" value="{{ ticket.telefone or '' }}">
     </div>
     <div class="form-group">
       <label for="tags">Tags (separadas por vírgula)</label>

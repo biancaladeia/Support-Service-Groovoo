@@ -8,7 +8,7 @@ attachments.  A simple dashboard shows counts of tickets by status and
 provides filters and search functionality.  Tickets may also be exported
 to CSV or Markdown formats.
 
-The visual design is inspired by Groovoo's dark theme.  Most of the
+The visual design is inspired by Groovoo's theme.  Most of the
 colour palette lives in ``static/css/style.css``; the templates assume
 the presence of this file for layout and styling.
 
@@ -311,7 +311,6 @@ def create_ticket():
         organizer = request.form.get('organizer')
         event = request.form.get('event')
         email = request.form.get('email')
-        telefone = request.form.get('telefone')
         client_name = request.form.get('client_name')
         client_contact = request.form.get('client_contact')
         channel = request.form.get('channel')
@@ -331,7 +330,6 @@ def create_ticket():
             organizer=organizer,
             event=event,
             email=email,
-            telefone=telefone,
             client_name=client_name,
             client_contact=client_contact,
             channel=channel,
@@ -449,7 +447,6 @@ def edit_ticket(ticket_id: int):
         ticket.organizer = request.form.get('organizer')
         ticket.event = request.form.get('event')
         ticket.email = request.form.get('email')
-        ticket.telefone = request.form.get('telefone')
         ticket.client_name = request.form.get('client_name')
         ticket.client_contact = request.form.get('client_contact')
         ticket.channel = request.form.get('channel')
